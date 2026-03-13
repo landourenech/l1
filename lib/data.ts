@@ -10,6 +10,7 @@ export const data: StudentData[] = [
     { id: 3, name: "AGWU Salomon", exercises: ["/agwu/a1.png", "/agwu/a2.png", "/agwu/a3.png", "/agwu/a4.png", "/agwu/a5.png"] },
     { id: 4, name: "BOUASSA Gloire", exercises: ["/bouassa/b1.png", "/bouassa/b2.png", "/bouassa/b4.png", "#", "/bouassa/b5.png"] },
     { id: 5, name: "LANDOU-NZUZI Mechack", exercises: ["/renech/l1.png", "/renech/l2.png", "/renech/l3.png", "#", "#"] },
+    { id: 6, name: "BOUSSOUGOU NDZINDZI Mesmin", exercises: ["/mesmin/m1.png", "/mesmin/m2.png", "/mesmin/m3.png", "/mesmin/m4.png", "/mesmin/m5.png"] },
 
 
 ];
