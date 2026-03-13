@@ -14,6 +14,12 @@ export const data: StudentData[] = [
     { id: 7, name: "KADIATA ANTCHOUET Bill Trésor", exercises: ["/tresor/t1.png", "/tresor/t2.png", "/tresor/t3.png", "/tresor/t4.png", "/tresor/t5.png"] },
     { id: 8, name: "NGATÉ SOULYEMANE", exercises: ["/ngate/n1.png", "/ngate/n2.png", "/ngate/n3.png", "/ngate/n4.png", "/ngate/n5.png"] },
     { id: 9, name: "ONKARA Manassé Josué", exercises: ["/onkara/o1.jpeg", "/onkara/o2.jpeg", "/onkara/o3.jpeg", "/onkara/o4.jpeg", "/onkara/o5.jpeg"] },
+    { id: 10, name: "BADAROU YASSIR Marc ", exercises: ["/yassir/y1.png", "/yassir/y2.png", "/yassir/y3.png", "/yassir/y4.png", "/yassir/y5.png"] },
+    { id: 11, name: "BOUASSA BOUILINGUI LEWIS", exercises: ["/lewis/l1.png", "/lewis/l2.png", "/lewis/l3.png", "/lewis/l4.png", "/lewis/l5.png"] },
+    { id: 12, name: "HOUNNOU Kassi Wilfried", exercises: ["/hounnou/h1.png", "/hounnou/h2.png", "/hounnou/h3.png", "/hounnou/h4.png", "/hounnou/h5.png"] },
+    { id: 13, name: "KADAI Espoir ", exercises: ["/espoir/e1.png", "#", "/espoir/e3.png", "/espoir/e4.png", "/espoir/e5.png"] },
+    { id: 14, name: "Bayi Harrissia Tiffany Rosine", exercises: ["/rossine/r1.png", "/rossine/r2.png", "/rossine/r3.png", "/rossine/r4.png", "/rossine/r5.png"] },
+
 ];
 
 const FALLBACK_IMAGE = "/manque.png";
