@@ -19,10 +19,9 @@ export const data: StudentData[] = [
     { id: 12, name: "HOUNNOU Kassi Wilfried", exercises: ["/hounnou/h1.png", "/hounnou/h2.png", "/hounnou/h3.png", "/hounnou/h4.png", "/hounnou/h5.png"] },
     { id: 13, name: "KADAI Espoir ", exercises: ["/espoir/e1.png", "#", "/espoir/e3.png", "/espoir/e4.png", "/espoir/e5.png"] },
     { id: 14, name: "Bayi Harrissia Tiffany Rosine", exercises: ["/rossine/r1.png", "/rossine/r2.png", "/rossine/r3.png", "/rossine/r4.png", "/rossine/r5.png"] },
-
-];
-
-const FALLBACK_IMAGE = "/manque.png";
+    { id: 15, name: "OKOMO ONDO vivaldy-mhirna-clode", exercises: ["/vivaldy/v1.png", "/vivaldy/v2.png", "/vivaldy/v3.png", "/vivaldy/v4.png", "/vivaldy/v5.png"] },
+    { id: 16, name: "ASSOUMOU EKANG Nick Franchy", exercises: ["/assoumou/a1.png", "/assoumou/a2.png", "#", "/assoumou/a4.png", "/assoumou/a5.png"] },
+assoumou/at FALLBACK_IMAGE = "/manque.png";
 
 export const getStudentExercises = (studentExercises: string[]): string[] => {
     const fullList = [...studentExercises];
