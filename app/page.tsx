@@ -18,8 +18,7 @@ export default function Home() {
         alt="Logo"
         width={200}
         height={200}
-        className="absolute top-[10%] left-[8gi
-        0%] transform -translate-x-1/2 -translate-y-1/2 mb-8 rounded-full "
+        className="absolute top-[10%] left-[80%] transform -translate-x-1/2 -translate-y-1/2 mb-8 rounded-full "
       />
       <Image
         src="/3.gif"

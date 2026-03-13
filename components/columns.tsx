@@ -27,7 +27,7 @@ export const columns: ColumnDef<any>[] = [
     header: "Devoirs rendus",
     cell: ({ row }) => {
       const exercises = row.original.exercises || []
-      const realCount = exercises.filter((img: string) => img !== "/manque.png").length
+      const realCount = exercises.filter((img: string) => img && img !== "/manque.png" && img !== "#").length
       
       let dotColor = "bg-orange-500"
       if (realCount >= 5) dotColor = "bg-green-500"
