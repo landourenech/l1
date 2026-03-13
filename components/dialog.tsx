@@ -86,6 +86,15 @@ export function ExerciseDialog({
     if (isOpen) setCurrentIndex(0);
   }, [isOpen]);
 
+  const handleImageError = (index: number) => {
+    setDisplayImages((prev) => {
+      if (!prev[index] || prev[index] === FALLBACK_IMAGE) return prev;
+      const next = [...prev];
+      next[index] = FALLBACK_IMAGE;
+      return next;
+    });
+  };
+
   return (
     <>
       {!hideTrigger && (
@@ -165,11 +174,3 @@ export function ExerciseDialog({
     </>
   );
 }
-  const handleImageError = (index: number) => {
-    setDisplayImages((prev) => {
-      if (!prev[index] || prev[index] === FALLBACK_IMAGE) return prev;
-      const next = [...prev];
-      next[index] = FALLBACK_IMAGE;
-      return next;
-    });
-  };
