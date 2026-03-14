@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion"; // Ajout pour le swipe
 
 interface ExerciseDialogProps {
   studentName: string;
-  images: string[]; // Exemple : ["/img1.png", "#", "/img3.png"]
+  images: string[];
   statusLabel?: string;
   dotColor?: string;
   open?: boolean;
@@ -28,28 +29,19 @@ export function ExerciseDialog({
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [displayImages, setDisplayImages] = React.useState<string[]>([]);
 
-  // Titres fixes pour les 5 exercices
   const EXERCISE_TITLES = React.useMemo(
     () => ["Exo 1 TD", "Exo 2 TD", "Exo 3 TD", "Devoir Exo 1", "Devoir Exo 2"],
     []
   );
 
-  // 1. Nettoyage et complétion de la liste d'images
   React.useEffect(() => {
-    // On remplace les "#" ou chaînes vides par l'image de secours
     const cleaned = images.map((img) => (img === "#" || !img ? FALLBACK_IMAGE : img));
-
-    // On complète jusqu'à 5 éléments
     const list = [...cleaned];
-    while (list.length < 5) {
-      list.push(FALLBACK_IMAGE);
-    }
+    while (list.length < 5) list.push(FALLBACK_IMAGE);
     setDisplayImages(list);
   }, [images]);
 
-  // 2. Calcul du nombre réel d'exercices rendus (ceux qui ne sont pas l'image de secours)
   const realCount = displayImages.filter((img) => img !== FALLBACK_IMAGE).length;
-
   const isOpen = typeof open === "boolean" ? open : internalOpen;
   const count = displayImages.length;
   const currentTitle = EXERCISE_TITLES[currentIndex] || `Exercice ${currentIndex + 1}`;
@@ -59,40 +51,14 @@ export function ExerciseDialog({
     onOpenChange?.(next);
   };
 
-  const nextImage = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prev) => (prev + 1) % count);
-  };
+  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % count);
+  const prevImage = () => setCurrentIndex((prev) => (prev - 1 + count) % count);
 
-  const prevImage = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prev) => (prev - 1 + count) % count);
-  };
-
-  // Navigation au clavier
-  React.useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-      if (e.key === "ArrowRight") nextImage();
-      if (e.key === "ArrowLeft") prevImage();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isOpen]);
-
-  // Reset de l'index à l'ouverture
-  React.useEffect(() => {
-    if (isOpen) setCurrentIndex(0);
-  }, [isOpen]);
-
-  const handleImageError = (index: number) => {
-    setDisplayImages((prev) => {
-      if (!prev[index] || prev[index] === FALLBACK_IMAGE) return prev;
-      const next = [...prev];
-      next[index] = FALLBACK_IMAGE;
-      return next;
-    });
+  // Gestion du Swipe (balayage)
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) nextImage();
+    else if (info.offset.x > swipeThreshold) prevImage();
   };
 
   return (
@@ -100,77 +66,90 @@ export function ExerciseDialog({
       {!hideTrigger && (
         <button
           type="button"
-          onClick={() => {
-            setOpen(true);
-            setCurrentIndex(0);
-          }}
+          onClick={() => { setOpen(true); setCurrentIndex(0); }}
           className="flex w-full items-center justify-between px-4 py-2 hover:bg-zinc-100/80 transition-colors rounded-lg group"
         >
           <span className="font-medium group-hover:text-blue-600">{studentName}</span>
           <div className="flex items-center gap-3">
-            {statusLabel && <span className="text-xs text-muted-foreground">{statusLabel}</span>}
             <span className="text-xs text-muted-foreground">{realCount}/5</span>
             <span className={`h-2.5 w-2.5 rounded-full ${dotColor} border border-black/5`} />
           </div>
         </button>
       )}
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-2xl p-4 md:p-10 animate-in fade-in duration-500">
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute top-6 right-6 text-white/70 hover:text-white z-50 transition-colors"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4"
           >
-            <X size={32} />
-          </button>
+            {/* Bouton Fermer agrandi pour mobile */}
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-4 right-4 text-white/70 hover:text-white z-[110] p-2"
+            >
+              <X size={32} />
+            </button>
 
-          <div className="relative flex flex-col items-center w-full h-full max-w-5xl">
-            <div className="text-center mb-6">
-              <p className="text-white font-bold text-xl">{studentName}</p>
-              <h2 className="text-xl font-bold text-white">{currentTitle}</h2>
-              <p className="text-zinc-400 text-sm">Rendus: {realCount} / 5</p>
-            </div>
+            <div className="relative flex flex-col items-center w-full h-full max-w-5xl justify-center">
+              <div className="text-center mb-4">
+                <p className="text-white font-bold text-lg md:text-xl">{studentName}</p>
+                <h2 className="text-blue-400 font-semibold">{currentTitle}</h2>
+              </div>
 
-            <div className="relative flex-1 w-full flex items-center justify-center group">
-              <button
-                onClick={prevImage}
-                className="absolute left-0 z-50 p-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0"
-              >
-                <ChevronLeft size={40} />
-              </button>
+              <div className="relative w-full flex items-center justify-center touch-none">
+                {/* Navigation Desktop (Cachée sur petit mobile ou tactile) */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                  className="absolute left-2 z-50 p-2 bg-white/10 rounded-full text-white hidden md:block"
+                >
+                  <ChevronLeft size={32} />
+                </button>
 
-              <img
-                src={displayImages[currentIndex]}
-                alt={currentTitle}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl select-none"
-                // Si le fichier est manquant sur le serveur (404), on remplace ET on retire du calcul
-                onError={() => handleImageError(currentIndex)}
-              />
-
-              <button
-                onClick={nextImage}
-                className="absolute right-0 z-50 p-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0"
-              >
-                <ChevronRight size={40} />
-              </button>
-            </div>
-
-            {/* Indicateurs (dots) en bas */}
-            <div className="mt-8 flex gap-3">
-              {displayImages.map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-1.5 w-10 rounded-full transition-all duration-300 ${
-                    i === currentIndex
-                      ? "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                      : "bg-white/20"
-                  }`}
+                {/* ZONE IMAGE AVEC SWIPE */}
+                <motion.img
+                  key={currentIndex}
+                  src={displayImages[currentIndex]}
+                  alt={currentTitle}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  drag="x" // Active le drag horizontal
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={handleDragEnd}
+                  className="max-w-full max-h-[65vh] object-contain rounded-lg shadow-2xl cursor-grab active:cursor-grabbing"
                 />
-              ))}
+
+                <button
+                  onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                  className="absolute right-2 z-50 p-2 bg-white/10 rounded-full text-white hidden md:block"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </div>
+
+              {/* Indicateurs de progression */}
+              <div className="mt-8 flex gap-2 overflow-x-auto max-w-full px-4">
+                {displayImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
+                    className={`h-1.5 min-w-[40px] rounded-full transition-all ${
+                      i === currentIndex ? "bg-blue-500 w-12" : "bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+              
+              <p className="mt-4 text-white/40 text-xs md:hidden">
+                Faites glisser pour changer d'exercice
+              </p>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
