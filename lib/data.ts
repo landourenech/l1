@@ -22,7 +22,7 @@ export const data: StudentData[] = [
     { id: 15, name: "OKOMO ONDO vivaldy-mhirna-clode", exercises: ["/vivaldy/v1.png", "/vivaldy/v2.png", "/vivaldy/v3.png", "/vivaldy/v4.png", "/vivaldy/v5.png"] },
     { id: 16, name: "ASSOUMOU EKANG Nick Franchy", exercises: ["/assoumou/a1.png", "/assoumou/a2.png", "#", "/assoumou/a4.png", "/assoumou/a5.png"] },
     { id:17,  name: "KADIATA NKOUMBA Ariel Sacre", exercises: ["/ariel/a1.png", "/ariel/a2.png", "/ariel/a3.png", "/ariel/a4.png", "/ariel/a5.png"] },
-     { id: 18, name: "Ondo ONIANE Joseph", exercises: ["/joseph/j1.png", "/joseph/j2.png", "#", "/joseph/j4.png", "#"] },
+     { id: 18, name: "Ondo ONIANE Joseph", exercises: ["/joseph/j1.jpeg", "/joseph/j2.jpeg", "#", "/joseph/j4.jpeg", "#"] },
     { id:19,  name: "ROPONAT HUGUES JUNIOR LUCAS", exercises: ["/hugues/h1.png", "/hugues/h2.png", "/hugues/h3.png", "/hugues/h4.png", "/hugues/h5.png"] },
 
 ];
